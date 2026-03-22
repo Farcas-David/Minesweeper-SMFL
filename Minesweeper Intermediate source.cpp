@@ -556,7 +556,7 @@ void solve()
 			{
 				cout << "BINE BAAAAA";
 			}
-			if (ev.type == sf::Event::MouseButtonPressed && nrcst() == 0)
+			if (ev.type == sf::Event::MouseButtonPressed && nrcst() == 0 && Stil_In_this == true)
 			{
 				if (ev.mouseButton.button == sf::Mouse::Left)
 				{
@@ -639,7 +639,7 @@ void solve()
 
 
 				}
-				else if (ev.mouseButton.button == sf::Mouse::Right)
+				else if (ev.mouseButton.button == sf::Mouse::Right && Stil_In_this == true)
 				{
 					int xx = ev.mouseButton.x;
 					int yy = ev.mouseButton.y;
