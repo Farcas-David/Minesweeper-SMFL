@@ -32,6 +32,8 @@ char smn = '?';
 ///-1 bomba
 ///? nu stii cei acolo
 
+sf::Clock game_clock;
+
 void draw_table(vector<vector<int>>& a, sf::RenderWindow& window)
 {
 	//sf::RenderWindow window(sf::VideoMode(424, 424), "Minesweeper", sf::Style::Close);
@@ -146,6 +148,14 @@ void draw_table(vector<vector<int>>& a, sf::RenderWindow& window)
 			}
 		}
 	}
+	sf::Text timer_text;
+	timer_text.setFont(font);
+	timer_text.setCharacterSize(48);
+	timer_text.setFillColor(sf::Color::White);
+	timer_text.setPosition(4 * 424 + 20, 50);
+	int seconds = (int)game_clock.getElapsedTime().asSeconds();
+	timer_text.setString(to_string(seconds));
+	window.draw(timer_text);
 	window.display();
 
 }
@@ -288,7 +298,14 @@ void draw_table_loser(vector<vector<int>>& a, vector<vector<int>>& v, sf::Render
 		sp5.setScale(0.1, 0.1);
 		window.draw(sp5);
 	}
-
+	sf::Text timer_text;
+	timer_text.setFont(font);
+	timer_text.setCharacterSize(48);
+	timer_text.setFillColor(sf::Color::White);
+	timer_text.setPosition(4 * 424 + 20, 50);
+	int seconds = (int)game_clock.getElapsedTime().asSeconds();
+	timer_text.setString(to_string(seconds));
+	window.draw(timer_text);
 	window.display();
 
 }
@@ -534,7 +551,7 @@ void solve()
 	///-2 sterge un steag in caz ca lai pus din  greasala
 	///1 dezveleste un nr
 
-	sf::RenderWindow window(sf::VideoMode(4 * 424, 2 * 424), "Minesweeper", sf::Style::Close);
+	sf::RenderWindow window(sf::VideoMode(4 * 424 + 200, 2 * 424), "Minesweeper", sf::Style::Close);
 
 	while (window.isOpen())
 	{
@@ -558,6 +575,7 @@ void solve()
 			}
 			if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Space)
 			{
+				game_clock.restart();
 				Stil_In_this = 1;
 				cnt_bombe = 0;
 				v.clear();
@@ -684,12 +702,11 @@ void solve()
 						}
 				}
 			}
-			if (Stil_In_this)
-				draw_table(af, window);
 		}
+		if (Stil_In_this)
+			draw_table(af, window);
 	}
 }
-
 int main()
 {
 	solve();
