@@ -556,6 +556,15 @@ void solve()
 				window.close();
 				break;
 			}
+			if (ev.type == sf::Event::KeyPressed && ev.key.code == sf::Keyboard::Space)
+			{
+				Stil_In_this = 1;
+				cnt_bombe = 0;
+				v.clear();
+				af.clear();
+				citire_generare();
+				afis(v);
+			}
 			if (nrcst())
 			{
 				cout << "BINE BAAAAA";
