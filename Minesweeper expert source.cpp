@@ -34,10 +34,23 @@ char smn = '?';
 
 sf::Clock game_clock;
 
+bool nrcst()
+{
+
+	for (int i = 1; i <= n; i++)
+		for (int j = 1; j <= m; j++)
+			if (v[i][j] > 0 && af[i][j] != v[i][j])
+				return 0;
+
+	return 1;
+
+}
+
 void draw_table(vector<vector<int>>& a, sf::RenderWindow& window)
 {
 	//sf::RenderWindow window(sf::VideoMode(424, 424), "Minesweeper", sf::Style::Close);
-	sf::RectangleShape shape(sf::Vector2f(4 * 424, 2 * 424));
+	sf::RectangleShape shape(sf::Vector2f(4 * 424, 2 * 424)), bg(sf::Vector2f(4 * 424 + 200, 2 * 424));
+	bg.setFillColor(sf::Color(75, 75, 75));
 	shape.setFillColor(sf::Color(150, 150, 150));
 	sf::Font font;
 	font.loadFromFile("impact.ttf");
@@ -81,6 +94,7 @@ void draw_table(vector<vector<int>>& a, sf::RenderWindow& window)
 	sprite1.setTexture(texture1);
 	sprite2.setTexture(texture2);
 	window.clear();
+	window.draw(bg);
 	window.draw(shape);
 	for (int i = 0; i <= 4 * 424; i += 53) {
 		sf::Vertex line1[] =
@@ -148,14 +162,23 @@ void draw_table(vector<vector<int>>& a, sf::RenderWindow& window)
 			}
 		}
 	}
-	sf::Text timer_text;
-	timer_text.setFont(font);
-	timer_text.setCharacterSize(48);
-	timer_text.setFillColor(sf::Color::White);
-	timer_text.setPosition(4 * 424 + 20, 50);
-	int seconds = (int)game_clock.getElapsedTime().asSeconds();
-	timer_text.setString(to_string(seconds));
-	window.draw(timer_text);
+	sf::Text bombcnt;
+	bombcnt.setFont(font);
+	bombcnt.setString(std::to_string(cnt_bombe));
+	bombcnt.setCharacterSize(48);
+	bombcnt.setPosition(4 * 424 + 85, 2 * 424 - 350);
+	window.draw(bombcnt);
+	if (nrcst() == false) {
+		sf::Text timer_text;
+		timer_text.setFont(font);
+		timer_text.setCharacterSize(48);
+		timer_text.setFillColor(sf::Color::White);
+		timer_text.setPosition(4 * 424 + 85, 250);
+		int seconds = (int)game_clock.getElapsedTime().asSeconds();
+		timer_text.setString(to_string(seconds));
+		window.draw(timer_text);
+	}
+
 	window.display();
 
 }
@@ -167,7 +190,8 @@ void draw_table_loser(vector<vector<int>>& a, vector<vector<int>>& v, sf::Render
 	sp5.setTexture(tx5);
 
 	//sf::RenderWindow window(sf::VideoMode(424, 424), "Minesweeper", sf::Style::Close);
-	sf::RectangleShape shape(sf::Vector2f(4 * 424, 2 * 424));
+	sf::RectangleShape shape(sf::Vector2f(4 * 424, 2 * 424)), bg(sf::Vector2f(4 * 424 + 200, 2 * 424));
+	bg.setFillColor(sf::Color(75, 75, 75));
 	shape.setFillColor(sf::Color(150, 150, 150));
 	sf::Font font;
 	font.loadFromFile("impact.ttf");
@@ -220,6 +244,7 @@ void draw_table_loser(vector<vector<int>>& a, vector<vector<int>>& v, sf::Render
 	sprite4.setTexture(texture4);
 
 	window.clear();
+	window.draw(bg);
 	window.draw(shape);
 	for (int i = 0; i <= 4 * 424; i += 53) {
 		sf::Vertex line1[] =
@@ -298,14 +323,23 @@ void draw_table_loser(vector<vector<int>>& a, vector<vector<int>>& v, sf::Render
 		sp5.setScale(0.1, 0.1);
 		window.draw(sp5);
 	}
-	sf::Text timer_text;
-	timer_text.setFont(font);
-	timer_text.setCharacterSize(48);
-	timer_text.setFillColor(sf::Color::White);
-	timer_text.setPosition(4 * 424 + 20, 50);
-	int seconds = (int)game_clock.getElapsedTime().asSeconds();
-	timer_text.setString(to_string(seconds));
-	window.draw(timer_text);
+	sf::Text bombcnt;
+	bombcnt.setFont(font);
+	bombcnt.setString(std::to_string(cnt_bombe));
+	bombcnt.setCharacterSize(48);
+	bombcnt.setPosition(4 * 424 + 85, 2 * 424 - 350);
+	window.draw(bombcnt);
+	if (nrcst() == false) {
+		sf::Text timer_text;
+		timer_text.setFont(font);
+		timer_text.setCharacterSize(48);
+		timer_text.setFillColor(sf::Color::White);
+		timer_text.setPosition(4 * 424 + 85, 250);
+		int seconds = (int)game_clock.getElapsedTime().asSeconds();
+		timer_text.setString(to_string(seconds));
+		window.draw(timer_text);
+	}
+
 	window.display();
 
 }
@@ -499,20 +533,10 @@ bool verificare_finala()
 
 	return 1;
 }
-bool nrcst()
-{
-
-	for (int i = 1; i <= n; i++)
-		for (int j = 1; j <= m; j++)
-			if (v[i][j] > 0 && af[i][j] != v[i][j])
-				return 0;
-
-	return 1;
-
-}
 void c_2(int x, int y)
 {
 	af[x][y] = smn;
+	cnt_bombe++;
 }
 void c_1(int x, int y)
 {
@@ -707,6 +731,7 @@ void solve()
 			draw_table(af, window);
 	}
 }
+
 int main()
 {
 	solve();
